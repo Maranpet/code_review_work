@@ -24,6 +24,7 @@ class CalculatorTest {
         assertEquals(3, calc.div(9, 3), "9 / 3 должно равняться 3");
         assertEquals(0, calc.div(1, 2), "1 / 2 (целочисленное) должно равняться 0");
 
+        // Проверка исключения при делении на ноль
         assertThrows(ArithmeticException.class, () -> calc.div(5, 0),
                 "Деление на ноль должно вызывать ArithmeticException");
     }
@@ -37,6 +38,7 @@ class CalculatorTest {
 
     @Test
     void solver() {
+        // Проверяем результат формулы: (10 + 5) * 2 - 8 / 4 = 28
         assertEquals(28, calc.solver(), "Результат solver() должен быть 28");
     }
 }
