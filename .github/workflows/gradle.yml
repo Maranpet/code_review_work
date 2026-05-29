@@ -6,8 +6,8 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '30 12 * * 3'   # каждую среду в 12:30 UTC
-    - cron: '0 22 * * 5'    # каждую пятницу в 22:00 UTC
+    - cron: '30 12 * * 3'   # среда 12:30 UTC
+    - cron: '0 22 * * 5'    # пятница 22:00 UTC
 
 permissions:
   contents: read
@@ -28,7 +28,16 @@ jobs:
           java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
 
-      - name: Build and test with Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: build
+      # Делаем gradlew исполняемым (на Linux/macOS)
+      - name: Make gradlew executable (Unix)
+        if: runner.os != 'Windows'
+        run: chmod +x gradlew
+
+      # Запуск сборки и тестов в зависимости от ОС
+      - name: Build and test with Gradle (Unix)
+        if: runner.os != 'Windows'
+        run: ./gradlew build
+
+      - name: Build and test with Gradle (Windows)
+        if: runner.os == 'Windows'
+        run: .\gradlew.bat build
