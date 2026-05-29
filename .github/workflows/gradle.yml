@@ -26,14 +26,12 @@ jobs:
         uses: actions/setup-java@v4
         with:
           java-version: ${{ matrix.java-version }}
-          distribution: 'temurin'
+          distribution: 'zulu'   # Zulu поддерживает Java 13
 
-      # Делаем gradlew исполняемым (на Linux/macOS)
       - name: Make gradlew executable (Unix)
         if: runner.os != 'Windows'
         run: chmod +x gradlew
 
-      # Запуск сборки и тестов в зависимости от ОС
       - name: Build and test with Gradle (Unix)
         if: runner.os != 'Windows'
         run: ./gradlew build
